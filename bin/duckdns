@@ -60,7 +60,7 @@ DUCK_URL="https://www.duckdns.org/update?domains=$DOMAIN&token=$TOKEN&ip="
 
 if [[ -n $( ifconfig $INTERFACE | grep "status: master" ) ]];
 then
-	RESPONSE=$(/usr/local/bin/curl --url $DUCK_URL --insecure --silent --config -)
+	RESPONSE=$(/usr/local/bin/curl --url $DUCK_URL --insecure --silent)
 	if [ "$RESPONSE" = "OK" ]; then
 		MSG="duckdns: update OK"
 		echo $MSG
