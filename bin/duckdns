@@ -27,16 +27,16 @@ CONFIG_FILE=/etc/duckdns.conf
 if [[ -f /etc/duckdns.conf ]];
 then
 	. /etc/duckdns.conf
-	if [[ -z "$DOMAIN" ]];
+	if [[ -z "$TOKEN" ]];
 	then
-		MSG="duckdns: DOMAIN variable is not set"
+		MSG="duckdns: TOKEN variable is not set"
 		echo $MSG >&2
 		logger -p daemon.error $MSG
 		exit 1
 	fi
-	if [[ -z "$TOKEN" ]];
+	if [[ -z "$DOMAIN" ]];
 	then
-		MSG="duckdns: TOKEN variable is not set"
+		MSG="duckdns: DOMAIN variable is not set"
 		echo $MSG >&2
 		logger -p daemon.error $MSG
 		exit 1
