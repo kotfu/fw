@@ -36,9 +36,11 @@ appropriately.
 ### Dynamic DNS via duckdns.org
 
 1. Create a file /etc/duckdns.conf
-1. log in at www.duckdns.org
-2. get the token from there
-3. set up a domain (i.e. kotfu.duckdns.org)
-4. copy fw/etc/duckdns.conf to /etc
-4. set DOMAIN, TOKEN, and INTERFACE variables in /etc/duckdns.conf
-5. run /etc/fw/bin/duckdns.sh from /etc/daily.local
+2. log in at www.duckdns.org
+3. get the token from there
+4. set up a domain (i.e. kotfu.duckdns.org)
+5. copy fw/etc/duckdns.conf to /etc
+6. edit DOMAIN, TOKEN, and INTERFACE variables in /etc/duckdns.conf
+7. # chown root /etc/duckdns.conf
+8. # chmod 600 /etc/duckdns.conf
+9. run /etc/fw/bin/duckdns.sh from /etc/daily.local
