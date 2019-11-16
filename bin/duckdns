@@ -1,0 +1,80 @@
+#!/bin/sh
+# duckdns.sh - update the duckdns dynamic dns service with our IP
+
+#
+# you must create a file /etc/duckdns.conf which defines these shell variables:
+#
+#    DOMAIN
+#    TOKEN
+#    INTERFACE
+#
+# This script returns the following exit codes
+#
+# 0 - updated successfully
+# 1 - no config file, or config file doesn't contain proper variables
+# 2 - skipping update because we are not master
+# 3 - update failed
+#
+# My IP is fairly static, so I just put the following in /etc/daily.local
+#
+# next_part "Updating Duck DNS:"
+# /etc/fw/bin/duckdns
+#
+
+
+CONFIG_FILE=/etc/duckdns.conf
+
+if [[ -f /etc/duckdns.conf ]];
+then
+	source /etc/duckdns.conf
+	if [[ -z "$DOMAIN" ]];
+	then
+		MSG="duckdns: DOMAIN variable is not set"
+		echo $MSG >&2
+		logger -p daemon.error $MSG
+		exit 1
+	fi
+	if [[ -z "$TOKEN" ]];
+	then
+		MSG="duckdns: TOKEN variable is not set"
+		echo $MSG >&2
+		logger -p daemon.error $MSG
+		exit 1
+	fi
+	if [[ -z "$INTERFACE" ]];
+	then
+		MSG="duckdns: INTERFACE variable is not set"
+		echo $MSG >&2
+		logger -p daemon.error $MSG
+		exit 1
+	fi
+else
+	MSG="duckdns: $CONFIG_FILE: No such file or directory"
+	echo $MSG >&2
+	logger -p daemon.error $MSG
+	exit 1
+fi
+
+# build the URL
+DUCK_URL="https://www.duckdns.org/update?domains=$DOMAIN&token=$TOKEN&ip="
+
+if [[ -n $( ifconfig $INTERFACE | grep "status: master" ) ]];
+then
+	RESPONSE=$(/usr/local/bin/curl --url $DUCK_URL --insecure --silent --config -)
+	if [ "$RESPONSE" = "OK" ]; then
+		MSG="duckdns: update OK"
+		echo $MSG
+		logger -p daemon.notice $MSG
+		exit 0
+	else
+		MSG="duckdns: update failed: $RESPONSE"
+		echo $MSG
+		logger -p daemon.warning $MSG
+		exit 3
+	fi
+else
+	MSG="duckdns: skipping update because we are not master on carp0"
+	echo $MSG
+	logger -p daemon.notice $MSG
+	exit 2
+fi
