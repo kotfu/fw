@@ -1,0 +1,5 @@
+# TODO list
+
+- patch for /etc/daily to use slackcat instead of mail
+- patch for /etc/weekly to use slackcat instead of mail
+- move /etc/ifstated scripts to /etc/fw/bin with proper config files

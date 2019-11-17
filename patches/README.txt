@@ -10,5 +10,5 @@ setup is responsible for configuring interfaces, routing, and dns resolution.
 
 ```
 # cd /etc
-# patch --backup < /etc/fw/patches/rc.earlyboot.diff
+# patch --forward --backup < /etc/fw/patches/rc.earlyboot.diff
 ```
