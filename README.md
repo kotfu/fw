@@ -2,12 +2,38 @@
 Redundant OpenBSD Firewall Configuration
 
 
+## Administration Commands
+
+### Switching Primary Firewall
+
+We rely on `carp` to determine which firewall is currently the master. There
+may be occasion when you wish to manually switch which firewall is the
+master. You can't force anything to be the master, but you can signal that
+you don't want to be the master so another member of the carp group has a
+higher chance of being promoted.
+
+`/etc/rc` uses the carp demotion technique to try and prevent becoming the
+master while booting. To demote yourself:
+
+```
+# ifconfig -g carp carpdemote 128
+```
+
+When you want to undemote yourself:
+
+```
+# ifconfig -g carp -carpdemote 128
+```
+
+See ifconfig(8) for more info.
+
 ## What's included
 
 ### fw/patches
 
-To get the desired behavior, I had to patch some of the scripts that are part of
-the OpenBSD distribution.
+To get the desired behavior, I had to patch some of the scripts that are
+part of the OpenBSD distribution. This directory contains several diffs
+which modify stock files.
 
 
 ### fw/bin
@@ -15,6 +41,7 @@ the OpenBSD distribution.
 There are some handy scripts here which add additional functionality
 
 - duckdns - updates duckdns, a dynamic dns service
+- rc.earlyboot - patch /etc/rc to run this before the network is started
 
 
 ### fw/etc

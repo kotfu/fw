@@ -1,0 +1,14 @@
+#
+# rc.earlyboot
+
+# you need to patch /etc/rc in order for this to get run at the proper time
+
+# ifstated starts late in the system boot process, and it sets our
+# networking configuration. We need a working network configuration
+# early in the boot process to ntpd can set the time.
+
+if [ -f /etc/resolv.conf.earlyboot ];
+then
+    cp /etc/resolv.conf.earlyboot /etc/resolv.conf
+    chmod 644 /etc/resolv.conf
+fi
