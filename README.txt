@@ -13,7 +13,8 @@ you don't want to be the master so another member of the carp group has a
 higher chance of being promoted.
 
 `/etc/rc` uses the carp demotion technique to try and prevent becoming the
-master while booting. To demote yourself:
+master while booting. To demote yourself (i.e. to make yourself not be the
+master):
 
 ```
 # ifconfig -g carp carpdemote 128
@@ -26,6 +27,32 @@ When you want to undemote yourself:
 ```
 
 See ifconfig(8) for more info.
+
+This method is nice, but it doesn't survive a reboot: carpdemote is always back
+to normal when the system boots. If you are going to reboot the primary firewall
+and don't want it to be the master when it comes back up, use the following on
+the secondary:
+
+```
+# ifconfig carp0 advskew 32
+# ifconfig carp1 advskew 32
+```
+
+These commands allow the secondary to advertise faster, and therefore more
+likely to be the master. When you want the secondary to advertise more slowly
+you can put it back by:
+
+```
+# ifconfig carp0 advskew 128
+# ifconfig carp1 advskew 128
+```
+
+For reference: here's how I typically configure baseline advskew values for each
+firewall:
+
+- fw1 64 (typically master)
+- fw2 128 (typically backup)
+
 
 ## What's included
 
