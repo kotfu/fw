@@ -102,3 +102,17 @@ appropriately.
     next_part "Updating Duck DNS:"
     /etc/fw/bin/duckdns
     ```
+
+### Redundant time servers
+
+We use `ifstated` to bring up and down redundant network interfaces. `ifstated` starts
+after `ntpd`. If your CMOS battery is not working, then `ntpd` can't set the clock
+because there isn't a working network configuration, like there would be if you were
+not using `ifstated`. The culprit turns out to be the resolver: the interfaces come up OK
+initially, but you need a working name server in `resolv.conf`. For us, that means we need
+the other firewall's IP address in `resolv.conf`. To make this all work correctly you need:
+
+1. working `ntpd` configs on both firewalls
+2. a file /etc/resolv.conf.earlyboot which points to the other machine as a name server
+3. patch /etc/rc using patches/rc.earlyboot.diff.
+4. ensure bin/rc.earlyboot is executable
