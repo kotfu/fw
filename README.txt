@@ -95,6 +95,10 @@ appropriately.
 4. set up a domain (i.e. kotfu.duckdns.org)
 5. copy fw/etc/duckdns.conf to /etc
 6. edit DOMAIN, TOKEN, and INTERFACE variables in /etc/duckdns.conf
-7. # chown root /etc/duckdns.conf
-8. # chmod 600 /etc/duckdns.conf
-9. run /etc/fw/bin/duckdns.sh from /etc/daily.local
+7. chown root /etc/duckdns.conf
+8. chmod 600 /etc/duckdns.conf
+9. run /etc/fw/bin/duckdns.sh from /etc/daily.local with something like:
+    ```
+    next_part "Updating Duck DNS:"
+    /etc/fw/bin/duckdns
+    ```
