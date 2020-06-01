@@ -1,0 +1,30 @@
+# local daily tasks
+
+next_part "Checking for patches:"
+syspatch -c
+
+next_part "Updating Duck DNS:"
+/etc/fw/bin/duckdns
+
+next_part "Maintaining pf tables:"
+
+# remove offenders from the pf blacklist after 7 days
+echo
+echo "removing addresses from <blacklist> older than 7 days"
+pfctl -t blacklist -T expire 604800
+
+# dump the pf blacklist to a file so it's preserved across reboots
+BLACKLIST=/var/db/pf-blacklist
+pfctl -t blacklist -T show > $BLACKLIST
+echo
+echo $( cat $BLACKLIST | wc -l) "IP addresses from <blacklist> saved to $BLACKLIST"
+
+#
+VERBOSESTATUS=0
+next_part "Disk status:"
+echo ""
+echo "disks:"
+df -iklh
+
+next_part "Network status:"
+netstat -in
