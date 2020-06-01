@@ -1,0 +1,17 @@
+--- daily	Thu May  7 10:51:59 2020
++++ daily-slackcat	Mon Jun  1 15:47:24 2020
+@@ -179,7 +179,7 @@
+ 	sysctl -n kern.version
+ 	uptime
+ 	cat $MAINOUT
+-} 2>&1 | mail -s "`hostname` daily output" root
++} 2>&1 | /usr/local/bin/slackcat --filename "`hostname`-daily-output.txt"
+
+
+ MAINOUT=/var/log/security.out
+@@ -191,4 +191,4 @@
+ end_part
+ rm -f $PARTOUT
+
+-[ -s $MAINOUT ] && mail -s "`hostname` daily insecurity output" root < $MAINOUT
++[ -s $MAINOUT ] && /usr/local/bin/slackcat --filename "`hostname`-daily-insecurity-output.txt" < $MAINOUT

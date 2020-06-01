@@ -1,0 +1,8 @@
+--- weekly	Thu May  7 10:51:59 2020
++++ weekly-slackcat	Mon Jun  1 15:55:27 2020
+@@ -75,4 +73,5 @@
+ end_part
+ rm -f $PARTOUT
+
+-[ -s $MAINOUT ] && mail -s "`hostname` weekly output" root < $MAINOUT
++[ -s $MAINOUT ] && /usr/local/bin/slackcat --filename "`hostname`-weekly-output.txt" < $MAINOUT
