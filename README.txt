@@ -39,8 +39,8 @@ the secondary:
 ```
 
 These commands allow the secondary to advertise faster, and therefore more
-likely to be the master. When you want the secondary to advertise more slowly
-you can put it back by:
+likely to be the master. This can take a few seconds to take effect, be patient.
+When you want the secondary to advertise more slowly you can put it back by:
 
 ```
 # ifconfig carp0 advskew 128
