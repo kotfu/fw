@@ -1,0 +1,8 @@
+--- monthly	Thu May  7 10:51:59 2020
++++ monthly-slackcat	Sun Aug 23 13:58:35 2020
+@@ -46,4 +46,4 @@
+ end_part
+ rm -f $PARTOUT
+
+-[ -s $MAINOUT ] && mail -s "`hostname` monthly output" root < $MAINOUT
++[ -s $MAINOUT ] && /usr/local/bin/slackcat --filename "`hostname`-monthly-output.txt" < $MAINOUT
