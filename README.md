@@ -1,6 +1,4 @@
-# fw
-Redundant OpenBSD Firewall Configuration
-
+# Redundant OpenBSD Firewall Configuration
 
 ## Administration Commands
 
