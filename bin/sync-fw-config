@@ -1,0 +1,96 @@
+#!/bin/sh
+#
+# sync configuration items from fw1 to fw2
+#
+# run this script as root on fw2
+# it requires that root have passwordless login via ssh to fw1
+
+SRC_HOST=fw1.kotfu.net
+
+# some env variables for the two firewall IP addresses
+FW1=192.168.13.4
+FW2=192.168.13.5
+
+# make an rsync function to copy files
+RSYNC="rsync -ai --delete-after --exclude=*~"
+dosync() {
+    echo checking $1
+    $RSYNC $SRC_HOST:$1 $1
+}
+
+#
+# first sync /etc/fw, where we have lots of scripts
+# this is git repo, but rather than check it out, we
+# copy it from fw1 so we know we have the same stuff
+dosync /etc/fw/
+
+#
+# pf rules
+dosync /etc/pf/
+pfctl -f /etc/pf.conf
+if [ $? == 0 ]; then
+    echo 'pf(ok)'
+else
+    echo 'pf(fail)'
+fi
+
+#
+# ifstated
+dosync /etc/ifstated.conf
+dosync /etc/ifstated/
+# now go fix up all the scripts
+sed -i "/^GW=/s/.*/GW=$FW1/" /etc/ifstated/carp0-backup
+rcctl restart ifstated
+
+#
+# ntpd configuration
+dosync /etc/ntpd.conf
+sed -i "/^listen on $FW1/s/$FW1/$FW2/" /etc/ntpd.conf
+rcctl restart ntpd
+
+#
+# nsd
+dosync /var/nsd/etc/nsd.conf
+dosync /var/nsd/zones/
+rcctl restart nsd
+
+#
+# unbound
+dosync /var/unbound/etc/unbound.conf
+sed -r -i "/^[[:space:]]*interface:[[:space:]]*$FW1/s/$FW1/$FW2/" /var/unbound/etc/unbound.conf
+dosync /var/unbound/etc/root.hints
+dosync /var/unbound/etc/yoyo_ad_servers
+dosync /var/unbound/etc/discord_servers
+rcctl restart unbound
+
+#
+# dhcpd
+dosync /etc/dhcpd.conf
+dosync /var/db/dhcpd.key
+rcctl restart dhcpd
+
+#
+# sshd_config
+dosync /etc/ssh/sshd_config
+rcctl restart sshd
+
+#
+# postfix
+dosync /etc/postfix/
+rcctl restart postfix
+
+#
+# duck dynamic dns updater script
+dosync /etc/duckdns.conf
+
+#
+# slackcat configuration
+dosync /root/.slackcat
+sed -i "/^default_channel = /s/fw1/fw2/" /root/.slackcat
+
+#
+# daily system maintenance tasks
+dosync /etc/daily
+dosync /etc/daily.local
+dosync /etc/weekly
+dosync /etc/monthly
