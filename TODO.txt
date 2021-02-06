@@ -1,4 +1,3 @@
 # TODO list
 
 - move /etc/ifstated scripts to /etc/fw/bin with proper config files
-- move sync-fw-config from fw2 to /etc/fw/bin/
