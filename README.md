@@ -1,5 +1,19 @@
 # Redundant OpenBSD Firewall Configuration
 
+## Syncing
+
+We assume that any firewall configuration changes will be made in the files
+on fw1 and then replicated to fw2. The `bin/sync-fw-config` script copies
+all config files from fw1 to fw2 and restarts all services to ensure the
+new files are being used. Some services require changes to the config
+files to account for the fact that fw1 and fw2 have different hostnames
+and IP addresses.
+
+It also syncs /etc/fw, where the git repo containing all these files
+is cloned. This presents a chicken and egg problem because if you don't
+have the repo you can't sync the files. Initially you will have to clone
+this repo to both firewalls so that you can run the sync on fw2.
+
 ## Administration Commands
 
 ### Switching Primary Firewall
