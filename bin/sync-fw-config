@@ -35,6 +35,11 @@ else
 fi
 
 #
+# dhcpleased
+dosync /etc/dhcpleased.conf
+rcctl restart dhcpleased
+
+#
 # ifstated
 dosync /etc/ifstated.conf
 dosync /etc/ifstated/
