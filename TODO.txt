@@ -1,3 +1,1 @@
 # TODO list
-
-- move /etc/ifstated scripts to /etc/fw/bin with proper config files

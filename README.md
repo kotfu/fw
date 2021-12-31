@@ -81,14 +81,18 @@ There are some handy scripts here which add additional functionality
 
 - duckdns - updates duckdns, a dynamic dns service
 - rc.earlyboot - patch /etc/rc to run this before the network is started
-
+- gwif-master - run by ifstated to configure the internet gateway interface when we are master
+- gwif-backup - run by ifstated to configure the internet gateway interface when we are backup
+- ns-master - run by ifstated to configure /etc/resolv.conf when we are master
+- ns-backup - run by ifstated to configure /etc/resolv.conf when we are master
 
 ### fw/etc
 
-Example configuration files. These need to be copied to /etc and modified
+Example or actual configuration files. These need to be copied to /etc and modified
 appropriately.
 
-- duckdns.conf - configuration file for fw/bin/duckdns
+- etc/fw.conf - sample fw.conf used by many of these scripts
+- daily.local - daily file which updates duckdns
 
 
 ## Prerequisites and Requirements

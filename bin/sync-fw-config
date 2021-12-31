@@ -10,10 +10,6 @@ SRC_HOST=fw1.kotfu.net
 # get our config variables
 . /etc/fw.conf
 
-# some env variables for the two firewall IP addresses
-#FW1=192.168.13.4
-#FW2=192.168.13.5
-
 # make an rsync function to copy files
 RSYNC="rsync -ai --delete-after --exclude=*~"
 dosync() {
@@ -83,10 +79,6 @@ rcctl restart sshd
 # postfix
 dosync /etc/postfix/
 rcctl restart postfix
-
-#
-# duck dynamic dns updater script
-dosync /etc/duckdns.conf
 
 #
 # slackcat configuration

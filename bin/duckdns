@@ -1,12 +1,12 @@
 #!/bin/sh
-# duckdns.sh - update the duckdns dynamic dns service with our IP
+# update the duckdns dynamic dns service with our IP
 
 #
 # you must create a file /etc/duckdns.conf which defines these shell variables:
 #
-#    DOMAIN
-#    TOKEN
-#    INTERFACE
+#    DUCKDNS_DOMAIN
+#    DUCKDNS_TOKEN
+#    DUCKDNS_IF
 #
 # This script returns the following exit codes
 #
@@ -22,28 +22,28 @@
 #
 
 
-CONFIG_FILE=/etc/duckdns.conf
+CONFIG_FILE=/etc/fw.conf
 
-if [[ -f /etc/duckdns.conf ]];
+if [[ -f "$CONFIG_FILE" ]];
 then
-	. /etc/duckdns.conf
-	if [[ -z "$TOKEN" ]];
+	. $CONFIG_FILE
+	if [[ -z "$DUCKDNS_TOKEN" ]];
 	then
-		MSG="duckdns: TOKEN variable is not set"
+		MSG="duckdns: DUCKDNS_TOKEN variable is not set"
 		echo $MSG >&2
 		logger -p daemon.error $MSG
 		exit 1
 	fi
-	if [[ -z "$DOMAIN" ]];
+	if [[ -z "$DUCKDNS_DOMAIN" ]];
 	then
-		MSG="duckdns: DOMAIN variable is not set"
+		MSG="duckdns: DUCKDNS_DOMAIN variable is not set"
 		echo $MSG >&2
 		logger -p daemon.error $MSG
 		exit 1
 	fi
-	if [[ -z "$INTERFACE" ]];
+	if [[ -z "$DUCKDNS_IF" ]];
 	then
-		MSG="duckdns: INTERFACE variable is not set"
+		MSG="duckdns: DUCKDNS_IF variable is not set"
 		echo $MSG >&2
 		logger -p daemon.error $MSG
 		exit 1
@@ -56,9 +56,9 @@ else
 fi
 
 # build the URL
-DUCK_URL="https://www.duckdns.org/update?domains=$DOMAIN&token=$TOKEN&ip="
+DUCK_URL="https://www.duckdns.org/update?domains=$DUCKDNS_DOMAIN&token=$DUCKDNS_TOKEN&ip="
 
-if [[ -n $( ifconfig $INTERFACE | grep "status: master" ) ]];
+if [[ -n $( ifconfig $DUCKDNS_IF | grep "status: master" ) ]];
 then
 	RESPONSE=$(/usr/local/bin/curl --url $DUCK_URL --insecure --silent)
 	if [ "$RESPONSE" = "OK" ]; then
