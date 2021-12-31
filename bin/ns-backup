@@ -1,0 +1,14 @@
+#!/bin/sh
+#
+# set /etc/resolv.conf when this machine is backup on the nameserver
+# carp interface
+#
+# intended to be run by ifstated
+
+# copy resolv.conf into place
+cp /etc/resolv.conf.backup /etc/resolv.conf
+chmod 644 /etc/resolv.conf
+
+# postfix has a resolv.conf in it's chroot jail, update that one too
+cp /etc/resolv.conf /var/spool/postfix/etc/
+postfix reload

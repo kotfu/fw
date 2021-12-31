@@ -1,0 +1,26 @@
+#!/bin/sh
+#
+# configure the gateway interface to be a dummy and do nothing
+# run by ifstated when we are backup on carp0
+#
+
+# get our configuration settings
+. /etc/gwif.conf
+
+# take the interface down, dhcpleased should notice this
+ifconfig $GWIF down
+
+# remove the ip address from the external interface and give it
+# a bogus MAC address
+ifconfig $GWIF delete lladdr $FAKEMAC
+
+# flush the arp cache and delete the default route
+route -qn flush
+route delete default
+
+# set the default route to the other firewall
+route add default $GWIP
+
+# change the resolver too
+cp /etc/resolv.conf.earlyboot /etc/resolv.conf
+chmod 644 /etc/resolv.conf

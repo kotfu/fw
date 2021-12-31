@@ -1,0 +1,26 @@
+#!/bin/sh
+#
+# configure the gateway interface to connect to the internet
+# run by ifstated when we are master on carp0
+#
+
+# get our configuration settings
+. /etc/gwif.conf
+
+# configure the external interface and routes for us to be the gateway
+#NETDEV=em1
+# mac from fw1 hardware interface em1
+#MAC_ADDR=00:0d:b9:45:36:75
+
+# the interface shjould be down, but let's make sure
+ifconfig $GWIF down
+
+# attach the real MAC address
+ifconfig $GWIF lladdr $REALMAC
+
+# flush the arp cache and delete the default route
+route -qn flush
+route delete default
+
+# bringing up the interface will cause dhcpleased to request a new IP address
+ifconfig $GWIF up
