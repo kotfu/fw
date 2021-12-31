@@ -5,7 +5,7 @@
 #
 
 # get our configuration settings
-. /etc/gwif.conf
+. /etc/fw.conf
 
 # take the interface down, dhcpleased should notice this
 ifconfig $GWIF down

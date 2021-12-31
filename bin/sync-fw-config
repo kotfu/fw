@@ -7,9 +7,12 @@
 
 SRC_HOST=fw1.kotfu.net
 
+# get our config variables
+. /etc/fw.conf
+
 # some env variables for the two firewall IP addresses
-FW1=192.168.13.4
-FW2=192.168.13.5
+#FW1=192.168.13.4
+#FW2=192.168.13.5
 
 # make an rsync function to copy files
 RSYNC="rsync -ai --delete-after --exclude=*~"
@@ -42,15 +45,12 @@ rcctl restart dhcpleased
 #
 # ifstated
 dosync /etc/ifstated.conf
-dosync /etc/ifstated/
-# now go fix up all the scripts
-sed -i "/^GW=/s/.*/GW=$FW1/" /etc/ifstated/carp0-backup
 rcctl restart ifstated
 
 #
 # ntpd configuration
 dosync /etc/ntpd.conf
-sed -i "/^listen on $FW1/s/$FW1/$FW2/" /etc/ntpd.conf
+sed -i "/^listen on $FW1IP/s/$FW1IP/$FW2IP/" /etc/ntpd.conf
 rcctl restart ntpd
 
 #
@@ -62,7 +62,7 @@ rcctl restart nsd
 #
 # unbound
 dosync /var/unbound/etc/unbound.conf
-sed -r -i "/^[[:space:]]*interface:[[:space:]]*$FW1/s/$FW1/$FW2/" /var/unbound/etc/unbound.conf
+sed -r -i "/^[[:space:]]*interface:[[:space:]]*$FW1IP/s/$FW1IP/$FW2IP/" /var/unbound/etc/unbound.conf
 dosync /var/unbound/etc/root.hints
 dosync /var/unbound/etc/yoyo_ad_servers
 dosync /var/unbound/etc/blacklist_servers

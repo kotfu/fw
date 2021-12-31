@@ -5,7 +5,7 @@
 #
 
 # get our configuration settings
-. /etc/gwif.conf
+. /etc/fw.conf
 
 # configure the external interface and routes for us to be the gateway
 #NETDEV=em1
