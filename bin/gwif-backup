@@ -21,6 +21,3 @@ route delete default
 # set the default route to the other firewall
 route add default $GWIP
 
-# change the resolver too
-cp /etc/resolv.conf.earlyboot /etc/resolv.conf
-chmod 644 /etc/resolv.conf
