@@ -61,7 +61,7 @@ dosync /var/unbound/etc/unbound.conf
 sed -r -i "/^[[:space:]]*interface:[[:space:]]*$FW1IP/s/$FW1IP/$FW2IP/" /var/unbound/etc/unbound.conf
 dosync /var/unbound/etc/root.hints
 dosync /var/unbound/etc/yoyo_ad_servers
-dosync /var/unbound/etc/blacklist_servers
+dosync /var/unbound/etc/blocked_servers
 rcctl restart unbound
 
 #
