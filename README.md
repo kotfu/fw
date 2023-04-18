@@ -80,7 +80,6 @@ which modify stock files.
 There are some handy scripts here which add additional functionality
 
 - duckdns - updates duckdns, a dynamic dns service
-- rc.earlyboot - patch /etc/rc to run this before the network is started
 - gwif-master - run by ifstated to configure the internet gateway interface when we are master
 - gwif-backup - run by ifstated to configure the internet gateway interface when we are backup
 - ns-master - run by ifstated to configure /etc/resolv.conf when we are master
