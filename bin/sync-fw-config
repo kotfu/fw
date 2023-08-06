@@ -81,6 +81,11 @@ dosync /etc/postfix/
 rcctl restart postfix
 
 #
+# wireguard
+dosync /etc/wireguard
+sh /etc/netstart wg0
+
+#
 # slackcat configuration
 dosync /root/.slackcat
 sed -i "/^default_channel = /s/fw1/fw2/" /root/.slackcat
