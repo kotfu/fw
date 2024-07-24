@@ -131,3 +131,21 @@ the other firewall's IP address in `resolv.conf`. To make this all work correctl
 2. a file /etc/resolv.conf.earlyboot which points to the other machine as a name server
 3. patch /etc/rc using patches/rc.earlyboot.diff.
 4. ensure bin/rc.earlyboot is executable
+
+I have a USB gps device which is connected to fw1. When connected it registers as
+`/dev/cuaU0`. You can view the raw data with `cu -l /dev/cuaU0` at 9600 baud.
+To make it work as a time and location sensor, you have to do `ldattach nmea /dev/cuaU0`.
+To have this always happen when the machine boots, add this line to `/etc/ttys`:
+```
+cuaU0   "/sbin/ldattach nmea"           unknown on  softcar
+```
+
+The ublox GPS dongle that I have has a tiny green LED on it. That LED blinks green when
+it's synced to satellites. It will blink once when you first plug it in, or when the
+machine boots. If it hasn't been connected to satellites for a while, it may have to
+redownload a bunch of data from the satellites, which can take up to 30 minutes with
+no LED status blinking before it starts to sync.
+
+The orientation of the USB dongle is critical. The side with the blinking light needs
+to face up towards the sky, because that's where the antenna is. If it's upside down
+it probably won't get a satellite lock.
