@@ -140,6 +140,8 @@ To have this always happen when the machine boots, add this line to `/etc/ttys`:
 cuaU0   "/sbin/ldattach nmea"           unknown on  softcar
 ```
 
+You can see if the GPS sensor is working with `sysctl hw.sensors`.
+
 The ublox GPS dongle that I have has a tiny green LED on it. That LED blinks green when
 it's synced to satellites. It will blink once when you first plug it in, or when the
 machine boots. If it hasn't been connected to satellites for a while, it may have to
