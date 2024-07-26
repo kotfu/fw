@@ -123,16 +123,20 @@ appropriately.
 We use `ifstated` to bring up and down redundant network interfaces. `ifstated` starts
 after `ntpd`. If your CMOS battery is not working, then `ntpd` can't set the clock
 because there isn't a working network configuration, like there would be if you were
-not using `ifstated`. The culprit turns out to be the resolver: the interfaces come up OK
-initially, but you need a working name server in `resolv.conf`. For us, that means we need
-the other firewall's IP address in `resolv.conf`. To make this all work correctly you need:
+not using `ifstated`. The culprit turns out to be the default gateway. When we boot,
+we need to set the default gateway to the other firewall. After `ifstated` is running
+it will change it to be wherever it should be.
 
-1. working `ntpd` configs on both firewalls
-2. a file /etc/resolv.conf.earlyboot which points to the other machine as a name server
-3. patch /etc/rc using patches/rc.earlyboot.diff.
-4. ensure bin/rc.earlyboot is executable
+To solve this add the following to the bottom of the `hostname.igc1` file (or whatever
+the file is for the internal network interface):
+```
+!(. /etc/fw.conf && route add default $GWIP)
+```
 
-I have a USB gps device which is connected to fw1. When connected it registers as
+If the other firewall is up, then we'll have internet connectivity during the boot
+process.
+
+I have USB gps devices connected to both firewalls. When connected it registers as
 `/dev/cuaU0`. You can view the raw data with `cu -l /dev/cuaU0` at 9600 baud.
 To make it work as a time and location sensor, you have to do `ldattach nmea /dev/cuaU0`.
 To have this always happen when the machine boots, add this line to `/etc/ttys`:
