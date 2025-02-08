@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+#
+# pipe a mail message in and it will end up in a slack channel
+# via nodered
+#
+# intended to be used from /etc/mail/aliases to pipe a message to
+# this script
+#
+URL=http://nodered.kotfu.net/slackmail
+CHANNEL=""
+
+while getopts "c:" opt; do
+  case "$opt" in
+    c)  CHANNEL=$OPTARG
+      ;;
+  esac
+done
+
+if [ -z "${CHANNEL}" ];
+then
+    echo no channel >&2
+    exit 2
+fi
+
+curl --data-urlencode "channel=$CHANNEL" --data-urlencode mail@- -X POST $URL
