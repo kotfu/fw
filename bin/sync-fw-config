@@ -88,10 +88,5 @@ dosync /etc/wireguard
 sh /etc/netstart wg0
 
 #
-# slackcat configuration
-dosync /root/.slackcat
-sed -i "/^default_channel = /s/fw1/fw2/" /root/.slackcat
-
-#
 # daily system maintenance tasks
 dosync /etc/daily.local
