@@ -79,6 +79,7 @@ rcctl restart sshd
 # postfix
 dosync /etc/postfix/
 dosync /etc/mail/aliases
+sed -i '/^root: /s/fw1/fw2/' /etc/mail/aliases
 newaliases
 rcctl restart postfix
 
