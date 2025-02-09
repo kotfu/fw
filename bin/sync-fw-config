@@ -78,6 +78,8 @@ rcctl restart sshd
 #
 # postfix
 dosync /etc/postfix/
+dosync /etc/mail/aliases
+newaliases
 rcctl restart postfix
 
 #
