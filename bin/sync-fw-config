@@ -92,7 +92,4 @@ sed -i "/^default_channel = /s/fw1/fw2/" /root/.slackcat
 
 #
 # daily system maintenance tasks
-dosync /etc/daily
 dosync /etc/daily.local
-dosync /etc/weekly
-dosync /etc/monthly
